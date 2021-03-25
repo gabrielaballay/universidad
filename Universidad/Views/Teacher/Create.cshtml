@@ -2,43 +2,89 @@
 
 @{
     ViewData["Title"] = "Create";
+
+}
+@section Css{ 
+    <link rel="stylesheet" href="~/css/toast.css" />
 }
 
 <h4>Teacher</h4>
 <hr />
 <div class="row justify-content-center">
     <div class="col-md-4 cuadro">
-        <form asp-action="Create">
+        <form asp-action="Create" id="form_teacher">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
-                <input asp-for="Nombre" class="form-control" placeholder="Nombre"/>
-                <span asp-validation-for="Nombre" class="text-danger"></span>
+                <input asp-for="Name" class="form-control" placeholder="Nombre" id="nombre" />
+                <span asp-validation-for="Name" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <input asp-for="Apellido" class="form-control" placeholder="Apellido"/>
-                <span asp-validation-for="Apellido" class="text-danger"></span>
+                <input asp-for="Last_name" class="form-control" placeholder="Apellido" id="apellido" />
+                <span asp-validation-for="Last_name" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <input asp-for="DNI" class="form-control" placeholder="DNI"/>
+                <input asp-for="DNI" class="form-control" placeholder="DNI" id="dni" />
                 <span asp-validation-for="DNI" class="text-danger"></span>
             </div>
-            <div class="form-group form-check">
-                <label class="form-check-label">
-                    <input class="form-check-input" asp-for="Activo" checked/> @Html.DisplayNameFor(model => model.Activo)
-                </label>
-            </div>
-            <div class="d-flex justify-content-between">
-                <div class="form-group">
-                    <input type="submit" value="Create" class="btn btn-primary" />
-                </div>
-                <div>
-                    <a asp-action="Index" class="btn btn-outline-danger">Back...</a>
-                </div>
+
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary btn-block" />
             </div>
         </form>
     </div>
 </div>
 
+@*Toast de Respuesta*@
+<div role="alert" id="mitoast" aria-live="assertive" aria-atomic="true" class="toast">
+
+    <div class="toast-header bg-primary text-white" id="header_toas">
+        <!-- Nombre de la Aplicación -->
+        <strong class="mr-auto">Universidad</strong>
+        <!-- Tiempo del Evento realizado -->
+        <small>Cerrar</small>
+        <!-- Botón para Cerrar el Toast -->
+        <button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Cerrar" onclick="cerrarToast()">
+            <span aria-hidden="true">×</span>
+        </button>
+    </div>
+    <div class="toast-body text-center">
+        @ViewBag.Mensaje
+        @ViewBag.Error
+    </div>
+</div>
+
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
+<script>
+        var mensaje = '@ViewBag.Mensaje';
+    var error = '@ViewBag.Error';
+
+        if (mensaje.length > 0) {
+            $('#nombre').val("");
+            $('#apellido').val("");
+            $('#dni').val("");
+            $('#form_teacher').removeData();
+            mostrarToast();
+        } else if(error.length>0) {
+            var header = document.getElementById('header_toas');
+            header.className = header.className.replace("bg-primary", "bg-danger");
+            mostrarToast();
+        }
+
+    // Con esta función se muestra el Toast
+    function mostrarToast() {
+        var toast = document.getElementById("mitoast");
+        toast.className = "mostrar";
+        setTimeout(function () { toast.className = toast.className.replace("mostrar", ""); }, 5000);
+    }
+
+    // Con esta función se cierra el Toast
+    function cerrarToast() {
+        var toast = document.getElementById("mitoast");
+        toast.className = "cerrar";
+        toast.className = toast.className.replace("cerrar", "");
+    }
+
+</script>
 }

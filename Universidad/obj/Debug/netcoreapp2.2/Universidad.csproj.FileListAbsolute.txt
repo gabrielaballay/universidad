@@ -31,6 +31,12 @@ C:\Users\JP_W10\Documents\challenge\Universidad\Universidad\obj\Debug\netcoreapp
 C:\Users\JP_W10\Documents\challenge\Universidad\Universidad\obj\Debug\netcoreapp2.2\Universidad.pdb
 C:\Users\JP_W10\Documents\challenge\Universidad\Universidad\obj\Debug\netcoreapp2.2\Universidad.genruntimeconfig.cache
 C:\Users\JP_W10\Documents\challenge\Universidad\Universidad\obj\Debug\netcoreapp2.2\Universidad.csproj.CopyComplete
-C:\Users\JP_W10\Documents\challenge\Universidad\Universidad\obj\Debug\netcoreapp2.2\Universidad.csproj.CoreCompileInputs.cache
 C:\Users\JP_W10\Documents\challenge\Universidad\Universidad\obj\Debug\netcoreapp2.2\Razor\Views\Teacher\Create.cshtml.g.cs
 C:\Users\JP_W10\Documents\challenge\Universidad\Universidad\obj\Debug\netcoreapp2.2\Razor\Views\Subject\Create.cshtml.g.cs
+C:\Users\JP_W10\Documents\challenge\Universidad\Universidad\obj\Debug\netcoreapp2.2\Razor\Views\Subject\Index.cshtml.g.cs
+C:\Users\JP_W10\Documents\challenge\Universidad\Universidad\obj\Debug\netcoreapp2.2\Razor\Views\Teacher\Index.cshtml.g.cs
+C:\Users\JP_W10\Documents\challenge\Universidad\Universidad\obj\Debug\netcoreapp2.2\Razor\Views\Home\Login.cshtml.g.cs
+C:\Users\JP_W10\Documents\challenge\Universidad\Universidad\obj\Debug\netcoreapp2.2\Razor\Views\User\Register.cshtml.g.cs
+C:\Users\JP_W10\Documents\challenge\Universidad\Universidad\obj\Debug\netcoreapp2.2\Razor\Views\Subject\ListInscripcion.cshtml.g.cs
+C:\Users\JP_W10\Documents\challenge\Universidad\Universidad\obj\Debug\netcoreapp2.2\Universidad.csproj.CoreCompileInputs.cache
+C:\Users\JP_W10\Documents\challenge\Universidad\Universidad\obj\Debug\netcoreapp2.2\Razor\Views\Teacher\Edit.cshtml.g.cs

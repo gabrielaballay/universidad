@@ -62,3 +62,14 @@ body {
     border-radius: 5px;
     box-shadow: grey 3px 3px ;
 }
+
+#navbar li a:hover, #navbar li a:active {
+    background-color: #007BFF !important;
+    color: white;
+}
+
+#navbar ul li a:link, #navbar ul li a:visited {
+    color: black !important;
+}
+
+}

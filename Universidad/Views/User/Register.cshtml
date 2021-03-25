@@ -1,0 +1,58 @@
+﻿@model Universidad.Models.User
+@inject DataContext context
+
+@{
+    ViewData["Title"] = "Register";
+}
+
+<h4>Registrarse</h4>  <span class="text-danger">@ViewBag.Error</span>
+<span class="text-info">@ViewBag.Mensaje</span>
+<hr />
+<div class="row justify-content-center">
+    <div class="col-md-4 cuadro">
+        <form asp-action="Register">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <input asp-for="Name" class="form-control" placeholder="Ingrese Nombre" />
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input asp-for="Last_name" class="form-control" placeholder="Ingrese Apellido" />
+                <span asp-validation-for="Last_name" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input asp-for="DNI" class="form-control" placeholder="Ingrese DNI" />
+                <span asp-validation-for="DNI" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input asp-for="Docket" class="form-control" placeholder="Ingrese Nro Legajo" />
+                <span asp-validation-for="Docket" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input asp-for="Password" class="form-control" placeholder="Ingrese Password" />
+                <span asp-validation-for="Password" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <select asp-for="Id_type" class="form-control">
+                    @foreach (var item in context.User_types)
+                    {
+                        @:<option value="@item.Id_type">@(item.Type)</option>
+                    }
+                </select>
+            </div>
+
+            <div class="d-flex justify-content-center">
+                <p>¿Ya tienes Cuenta?</p>&nbsp;
+                <a asp-controller="Home" asp-action="Login" class="text-info">Login</a>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Register" class="btn btn-block btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

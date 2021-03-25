@@ -1,0 +1,117 @@
+﻿@model IEnumerable<Universidad.Models.Teacher>
+
+@{
+    ViewData["Title"] = "Index";
+}
+@section Css {
+    <link rel="stylesheet" href="~/css/toast.css" />
+}
+<h4>Teacher</h4>
+
+<table class="table row-border hover ui" id="table_teacher">
+    <thead>
+        <tr>
+            <th>Nombre</th>
+            <th>Apellido</th>
+            <th>DNI</th>
+            <th>Acción</th>
+        </tr>
+    </thead>  
+</table>
+
+@*Toast de Respuesta*@
+<div role="alert" id="mitoast" aria-live="assertive" aria-atomic="true" class="toast">
+
+    <div class="toast-header bg-primary text-white" id="header_toas">
+        <!-- Nombre de la Aplicación -->
+        <strong class="mr-auto">Universidad</strong>
+        <!-- Tiempo del Evento realizado -->
+        <small>Cerrar</small>
+        <!-- Botón para Cerrar el Toast -->
+        <button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Cerrar" onclick="cerrarToast()">
+            <span aria-hidden="true">×</span>
+        </button>
+    </div>
+    <div class="toast-body text-center">
+        <p id="mensaje"></p>
+    </div>
+</div>
+
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
+<script>
+    var table;
+    $(document).ready(function () {
+        table = $('#table_teacher').DataTable({
+            destroy: true,
+            responsive: true,
+            ajax: {
+                type: "POST",
+                url: "/Teacher/Lista",
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+            },
+            columns: [
+                { "data": "name" },
+                { "data": "last_name" },
+                { "data": "dni" },
+                {
+                    "data": "id_teacher", "render": function (data) {
+                        return "<a class='btn btn-danger text-white' onClick=eliminar(" + data + ")>Eliminar</a>&nbsp;<a href='/Teacher/Edit/" + data + "' class='btn btn-success text-white'>Editar</a>";
+                    }
+                }
+
+            ]
+        });
+        
+    });
+
+    function eliminar(id) {
+        
+        $.ajax({
+            type: "POST",
+            url: "/Teacher/Delete/" + id,
+            data: "{Id " + id + "}",
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            success: function (response) {
+                if (response.isSuccess) {
+                    $('#mensaje').html("<p>" + response.message + "</p>");
+                    mostrarToast();
+                    table.ajax.reload();
+                } else {
+                    var header = document.getElementById('header_toas');
+                    header.className = header.className.replace("bg-primary", "bg-danger");
+                    $('#mensaje').html("<p>" + response.message + "</p>");
+                    mostrarToast();
+
+                }
+            },
+
+            error: function (request, status, error) {
+
+                alert('Error');
+
+            }
+
+
+        });
+    }
+
+    // Con esta función se muestra el Toast
+    function mostrarToast() {
+            var toast = document.getElementById("mitoast");
+            toast.className = "mostrar";
+            setTimeout(function () { toast.className = toast.className.replace("mostrar", ""); }, 5000);
+        }
+
+    // Con esta función se cierra el Toast
+    function cerrarToast() {
+            var toast = document.getElementById("mitoast");
+            toast.className = "cerrar";
+            toast.className = toast.className.replace("cerrar", "");
+        }
+</script>
+}

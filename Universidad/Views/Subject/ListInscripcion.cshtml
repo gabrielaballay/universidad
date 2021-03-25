@@ -1,0 +1,74 @@
+﻿@model IEnumerable<Universidad.Models.Subject>
+
+@{
+    ViewData["Title"] = "ListInscripcion";
+}
+
+<h4 class="text-center">Listado de Materias</h4>
+
+<table class="table table-striped" id="myTable">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Id_subject)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Schedule)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Max_flake)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Id_teacher)
+            </th>
+            <th>
+                Accion
+            </th>            
+        </tr>
+    </thead>
+    <tbody>
+        @if (Model != null)
+        {
+            foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Id_subject)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Name)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Schedule)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Max_flake)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Id_teacher)
+                    </td>                    
+                    <td>
+                        <button class="btn btn-success">
+                            <i class="bi bi-pencil-fill"></i>
+                        </button>
+                    </td>
+                </tr>
+            }
+        }
+    </tbody>
+</table>
+
+@section Scripts {
+@{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
+<script>
+    $(document).ready(function () {
+        $('#myTable').DataTable({
+            "order": [[3, "desc"]]
+        });
+    });
+</script>
+}

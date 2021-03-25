@@ -83,5 +83,12 @@ namespace Universidad.Controllers
                 return View();
             }
         }
+
+
+        // GET: SubjectController/ListInscripcion
+        public ActionResult ListInscripcion()
+        {
+            return View();
+        }        
     }
 }
