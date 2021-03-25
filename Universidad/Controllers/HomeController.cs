@@ -14,6 +14,7 @@ using Universidad.Models;
 
 namespace Universidad.Controllers
 {
+    [Authorize(Roles = "Administrador,Alumno")]
     public class HomeController : Controller
     {
         private readonly DataContext contexto;
@@ -111,6 +112,14 @@ namespace Universidad.Controllers
                 ViewBag.Error += ex.StackTrace;
                 return View();
             }
+        }
+
+        // GET: Home/Logout
+        public async Task<ActionResult> Logout()
+        {
+            await HttpContext.SignOutAsync(
+                CookieAuthenticationDefaults.AuthenticationScheme);
+            return RedirectToAction("Login");
         }
 
     }

@@ -1,4 +1,6 @@
-﻿@model Universidad.Models.Teacher
+﻿@model Universidad.Models.Subject
+@inject DataContext context
+
 
 @{
     ViewData["Title"] = "Edit";
@@ -7,40 +9,48 @@
 @section Css {
     <link rel="stylesheet" href="~/css/toast.css" />
 }
-<h4 class="text-center text-muted">Editar Profesor</h4>
+
+
+<h4 class="text-center text-muted">Editar Materia</h4>
 <hr />
 <div class="row justify-content-center">
     <div class="col-md-4 cuadro">
         <form asp-action="Edit">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
             <div class="form-group">
                 <label asp-for="Name" class="control-label"></label>
                 <input asp-for="Name" class="form-control" />
                 <span asp-validation-for="Name" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="Last_name" class="control-label"></label>
-                <input asp-for="Last_name" class="form-control" />
-                <span asp-validation-for="Last_name" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="DNI" class="control-label"></label>
-                <input asp-for="DNI" class="form-control" />
-                <span asp-validation-for="DNI" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Active" class="control-label"></label>
-                @if (Model.Active == 1)
-                {
-                    <input type="checkbox" checked disabled/>
-                    <input asp-for="Active" class="form-control" hidden />
-                }
-                else
-                {
-                    <input asp-for="Active" type="checkbox" checked />
+            <div class="form-group d-flex">
+                <label asp-for="Start_time" class="control-label"></label>/
+                <label asp-for="End_time" class="control-label"></label>
 
-                }
             </div>
+            <div class="form-group d-flex justify-content-around">
+                <input type="time" asp-for="Start_time" class="form-control" />&nbsp;
+                <span asp-validation-for="Start_time" class="text-danger"></span>
+
+                <input Type="time" asp-for="End_time" class="form-control" />
+                <span asp-validation-for="End_time" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Max_flake" class="control-label"></label>
+                <input asp-for="Max_flake" class="form-control" />
+                <span asp-validation-for="Max_flake" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <select asp-for="Id_teacher" class="form-control">
+                    @foreach (var item in context.Teachers)
+                    {
+                        @:<option @(item.Id_teacher == Model.Id_teacher ? "selected" : "") value="@item.Id_teacher">@(item.Name+' '+item.Last_name)</option>
+                    }
+                </select>
+                <span asp-validation-for="Id_teacher" class="text-danger"></span>
+            </div>
+
             <div class="d-flex justify-content-between">
                 <div class="form-group">
                     <input type="submit" value="Save" class="btn btn-primary" />
@@ -68,14 +78,14 @@
         </button>
     </div>
     <div class="toast-body text-center">
-        <p > @ViewBag.Error</p>
+        <p> @ViewBag.Error</p>
     </div>
 </div>
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 
-<script>
+    <script>
     var error = '@ViewBag.Error';
 
     if (error.length > 0) {
@@ -94,5 +104,5 @@
         toast.className = "cerrar";
         toast.className = toast.className.replace("cerrar", "");
     }
-</script>
+    </script>
 }

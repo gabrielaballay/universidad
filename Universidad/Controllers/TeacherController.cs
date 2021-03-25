@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
@@ -11,6 +12,7 @@ using Universidad.Models;
 
 namespace Universidad.Controllers
 {
+    [Authorize(Roles = "Administrador")]
     public class TeacherController : Controller
     {
         private readonly DataContext context;
@@ -25,7 +27,6 @@ namespace Universidad.Controllers
         // GET: TeacherController
         public ActionResult Index()
         {
-            //var teachers = context.Teachers.Where(t=>t.Active==1).ToList();
             return View();
         }
 
@@ -100,6 +101,8 @@ namespace Universidad.Controllers
         // GET: TeacherController/Edit/5
         public ActionResult Edit(int id)
         {
+            if (TempData.ContainsKey("Error")) ViewBag.Error = TempData["Error"].ToString();
+
             var teacher = context.Teachers.Find(id);
             return View(teacher);
         }
@@ -107,27 +110,38 @@ namespace Universidad.Controllers
         // POST: TeacherController/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
+        public ActionResult Edit(int id, Teacher teacher)
         {
+            teacher.Id_teacher = id;
             try
             {
+                if (ModelState.IsValid)
+                {
+                    var logeado = User.Claims.ToArray();
+                    var docket = Convert.ToInt32(logeado[0].Value);
+                    var user_logeado = context.Users.FirstOrDefault(x => x.Docket == docket);
+                    teacher.Active = 1;
+                    teacher.Id_user = user_logeado.Id_user;
+
+                    context.Teachers.Update(teacher);
+                    context.SaveChanges();
+                }
+                else
+                {
+                    ViewBag.Error = "Algo salio mal revise los datos e intente de nuevo.";
+                    return View(teacher);
+                }
                 return RedirectToAction(nameof(Index));
             }
-            catch
+            catch (Exception e)
             {
-                return View();
+                ViewBag.Error = e.Message;
+                return View(teacher);
             }
         }
 
-        //// GET: TeacherController/Delete/5
-        //public ActionResult Delete(int id)
-        //{
-        //    return View();
-        //}
-
-        // POST: TeacherController/Delete/5
-        [HttpPost]
         
+        [HttpPost]        
         public JsonResult Delete(int? id)
         {
             string Mensaje = "Ocurio un error intentelo mas tarde.";

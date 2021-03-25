@@ -14,7 +14,8 @@ namespace Universidad.Models
 
         public DbSet<User_type> User_types { get; set; }
         public DbSet<User> Users { get; set; }
-
         public DbSet<Teacher> Teachers { get; set; }
+        public DbSet<Subject> Subjects { get; set; }
+        public DbSet<Registered> Registereds { get; set; }
     }
 }

@@ -1,31 +1,46 @@
 ﻿@model Universidad.Models.Subject
+@inject DataContext context
 
 @{
     ViewData["Title"] = "Create";
 }
+@section Css{
+    <link rel="stylesheet" href="~/css/toast.css" />
+}
 
-<h4>Subject</h4>
+<h4 class="text-center text-muted">Agregar Materias</h4>
 <hr />
 <div class="row justify-content-center">
     <div class="col-md-4 cuadro">
-        <form asp-action="Create">
+        <form asp-action="Create" id="myform">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
-                <label asp-for="Name" class="control-label"></label>
-                <input asp-for="Name" class="form-control" placeholder="Nombre" />
+                <input asp-for="Name" class="form-control" placeholder="Nombre Materia" id="nombre"/>
                 <span asp-validation-for="Name" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="Schedule" class="control-label"></label>
-                <input asp-for="Schedule" class="form-control" placeholder="Horario" />
-                <span asp-validation-for="Schedule" class="text-danger"></span>
+            @*<label asp-for="Hora_inicio" class="text-muted">Horario desde/hasta</label>*@
+            <div class="d-flex justify-content-around form-group">
+                <input type="time" asp-for="Start_time" class="form-control" placeholder="Hora Inicio" id="hora1"/>
+                <input type="time" asp-for="End_time" class="form-control" placeholder="Hora Fin" id="hora2"/>
             </div>
+            <div class="form-group text-muted"> Ejemplo 11:00 - 12:30</div>
             <div class="form-group">
-                <label asp-for="Max_flake" class="control-label"></label>
-                <input asp-for="Max_flake" class="form-control" />
+                <input asp-for="Max_flake" class="form-control" placeholder="Cupo Maximo" id="max"/>
                 <span asp-validation-for="Max_flake" class="text-danger"></span>
             </div>
-
+            <div class="form-group">
+                <div class="form-group">
+                    <select asp-for="Id_teacher" class="form-control">
+                        @foreach (var item in context.Teachers)
+                        {
+                            if (item.Active == 1)
+                            {
+                                @:<option value="@item.Id_teacher">@(item.Name + ' ' + item.Last_name)</option>
+                            }
+                        }
+                    </select>
+                </div>
+            </div>
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary btn-block" />
             </div>
@@ -34,6 +49,59 @@
 </div>
 
 
+@*Toast de Respuesta*@
+<div role="alert" id="mitoast" aria-live="assertive" aria-atomic="true" class="toast">
+
+    <div class="toast-header bg-primary text-white" id="header_toas">
+        <!-- Nombre de la Aplicación -->
+        <strong class="mr-auto">Universidad</strong>
+        <!-- Tiempo del Evento realizado -->
+        <small>Cerrar</small>
+        <!-- Botón para Cerrar el Toast -->
+        <button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Cerrar" onclick="cerrarToast()">
+            <span aria-hidden="true">×</span>
+        </button>
+    </div>
+    <div class="toast-body text-center">
+        @ViewBag.Mensaje
+        @ViewBag.Error
+    </div>
+</div>
+
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
+<script>
+    var mensaje = '@ViewBag.Mensaje';
+    var error = '@ViewBag.Error';
+
+        if (mensaje.length > 0) {
+            $('#nombre').val("");
+            $('#hora1').val("");
+            $('#hora2').val("");
+            $('#max').val("");
+            $('#my_form').removeData();
+            mostrarToast();
+        } else if(error.length>0) {
+            var header = document.getElementById('header_toas');
+            header.className = header.className.replace("bg-primary", "bg-danger");
+            mostrarToast();
+        }
+
+    // Con esta función se muestra el Toast
+    function mostrarToast() {
+        var toast = document.getElementById("mitoast");
+        toast.className = "mostrar";
+        setTimeout(function () { toast.className = toast.className.replace("mostrar", ""); }, 5000);
+    }
+
+    // Con esta función se cierra el Toast
+    function cerrarToast() {
+        var toast = document.getElementById("mitoast");
+        toast.className = "cerrar";
+        toast.className = toast.className.replace("cerrar", "");
+    }
+
+</script>
 }
+

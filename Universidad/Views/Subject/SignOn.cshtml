@@ -1,38 +1,36 @@
-﻿@model Universidad.Models.Teacher
+﻿@model Universidad.Models.Subject
 
 @{
-    ViewData["Title"] = "Create";
-
+    ViewData["Title"] = "SignOn";
 }
-@section Css{ 
+@section Css{
     <link rel="stylesheet" href="~/css/toast.css" />
 }
 
-<h4 class="text-center text-muted">Agregar Profesor</h4>
+<h4 class="text-center text-muted">Incribirse a Materia</h4>
 <hr />
 <div class="row justify-content-center">
-    <div class="col-md-4 cuadro">
-        <form asp-action="Create" id="form_teacher">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <input asp-for="Name" class="form-control" placeholder="Nombre" id="nombre" />
-                <span asp-validation-for="Name" class="text-danger"></span>
+    <div class="col-4 cuadro">
+        <form asp-action="SignOnConfirm" id="myform">
+            <p><b>Materia: </b> @Html.DisplayFor(model => model.Name)</p>
+            <p><b>@Html.DisplayNameFor(model => model.Max_flake): </b> @Html.DisplayFor(model => model.Max_flake)</p>
+            <p>
+                <b>Profesor: </b>@Html.DisplayFor(model => model.profe.Name)
+                @Html.DisplayFor(model => model.profe.Last_name)
+            </p>
+            <p><b>@Html.DisplayNameFor(model => model.Start_time): </b> @Html.DisplayFor(model => model.Start_time)</p>
+            <p><b>@Html.DisplayNameFor(model => model.End_time): </b> @Html.DisplayFor(model => model.End_time)</p>
+            <hr />
+            <div>
+                <span class="btn btn-outline-info"> @Html.ActionLink("Inscribirse", "SignOnConfirm", new { id = Model.Id_subject })</span> |
+                <a asp-action="ListInscripcion">Volver</a>
             </div>
-            <div class="form-group">
-                <input asp-for="Last_name" class="form-control" placeholder="Apellido" id="apellido" />
-                <span asp-validation-for="Last_name" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input asp-for="DNI" class="form-control" placeholder="DNI" id="dni" />
-                <span asp-validation-for="DNI" class="text-danger"></span>
-            </div>
-
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary btn-block" />
-            </div>
+            <br/>
         </form>
     </div>
+
 </div>
+
 
 @*Toast de Respuesta*@
 <div role="alert" id="mitoast" aria-live="assertive" aria-atomic="true" class="toast">
@@ -57,14 +55,10 @@
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 
 <script>
-        var mensaje = '@ViewBag.Mensaje';
+    var mensaje = '@ViewBag.Mensaje';
     var error = '@ViewBag.Error';
 
         if (mensaje.length > 0) {
-            $('#nombre').val("");
-            $('#apellido').val("");
-            $('#dni').val("");
-            $('#form_teacher').removeData();
             mostrarToast();
         } else if(error.length>0) {
             var header = document.getElementById('header_toas');
